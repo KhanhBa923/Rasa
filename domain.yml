@@ -16,12 +16,23 @@ intents:
   - delete_user
   - register_account
   - tell_joke
+  - invest_long_term
+  - invest_short_term
+  - basic_maket_invest
+  - derivatives_maket_invest
+  - invest_stock
+  - invest_bond
+  - stock_limit_up
+  - stock_limit_down
+  - stock_check_price
+  - out_of_scope
 entities:
   - name
   - id
   - username
   - password_hash
   - re_password
+  - stock_code
 forms:
   user_registration_form:
     required_slots:
@@ -54,6 +65,11 @@ slots:
     mappings: 
     - type: from_entity
       entity: id
+  stock_code:
+    type: text
+    mappings: 
+    - type: from_entity
+      entity: stock_code
 actions:
   - action_ask_information
   - action_calculate
@@ -62,6 +78,9 @@ actions:
   - action_update_user
   - action_tell_joke
   - action_delete_user
+  - action_stock_limit_up
+  - action_stock_limit_down
+  - action_stock_status
 responses:
   utter_greet:
   - text: "Hey! How are you?"
@@ -82,6 +101,26 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+  utter_out_of_scope:
+    - text: "Quý khách vui lòng hỏi về chứng khoán."
+
+  utter_long_term_invest:
+    - text: "Đầu tư dài hạn là chiến lược an toàn và bền vững."
+
+  utter_short_term_invest:
+    - text: "Đầu tư ngắn hạn phù hợp với nhà đầu tư ưa thích rủi ro."
+
+  utter_spot_market:
+    - text: "Thị trường cơ sở là nơi giao dịch các cổ phiếu thực tế."
+
+  utter_derivatives_market:
+    - text: "Thị trường phái sinh bao gồm hợp đồng tương lai và quyền chọn."
+
+  utter_stock_invest:
+    - text: "Cổ phiếu là hình thức đầu tư phổ biến nhất."
+
+  utter_bond_invest:
+    - text: "Trái phiếu phù hợp với nhà đầu tư thích lợi nhuận ổn định."
 
 session_config:
   session_expiration_time: 60

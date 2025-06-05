@@ -28,3 +28,48 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+- story: Đầu tư dài hạn
+  steps:
+    - intent: invest_long_term
+    - action: utter_long_term_invest
+
+- story: Đầu tư ngắn hạn
+  steps:
+    - intent: invest_short_term
+    - action: utter_short_term_invest
+
+- story: Thị trường cơ sở
+  steps:
+    - intent: basic_maket_invest
+    - action: utter_spot_market
+
+- story: Thị trường phái sinh
+  steps:
+    - intent: derivatives_maket_invest
+    - action: utter_derivatives_market
+
+- story: Đầu tư cổ phiếu
+  steps:
+    - intent: invest_stock
+    - action: utter_stock_invest
+
+- story: Đầu tư trái phiếu
+  steps:
+    - intent: invest_bond
+    - action: utter_bond_invest
+
+- story: Mã nào trần hôm nay
+  steps:
+    - intent: stock_limit_up
+    - action: action_stock_limit_up
+
+- story: Mã nào sàn hôm nay
+  steps:
+    - intent: stock_limit_down
+    - action: action_stock_limit_down
+
+- story: Mã ABC tăng hay giảm
+  steps:
+    - intent: stock_check_price
+    - action: action_stock_status

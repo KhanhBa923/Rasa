@@ -112,6 +112,7 @@ nlu:
 - intent: get_name_in_db
   examples: |
     - Get me first person name
+    - Name first person
 - intent: add_user
   examples: |
     - Add [khanhba](username) with [123abc](password_hash)
@@ -135,6 +136,76 @@ nlu:
 - intent: tell_joke
   examples: |
     - tell joke
+    - joke now
+
+
+
+- intent: invest_long_term
+  examples: |
+    - Tôi muốn đầu tư dài hạn
+    - Có nên đầu tư dài hạn không
+    - dau tu dai han
+
+- intent: invest_short_term
+  examples: |
+    - Đầu tư ngắn hạn như thế nào
+    - Cho hỏi đầu tư ngắn hạn
+    - toi muon dau tu ngan han
+    - dau tu ngan hạnt
+    - ngan han
+
+- intent: basic_maket_invest
+  examples: |
+    - Tôi muốn đầu tư thị trường cơ sở
+    - Đầu tư thị trường cơ sở
+    - thj truong co so
+
+- intent: derivatives_maket_invest
+  examples: |
+    - Tôi muốn đầu tư thị trường phái sinh
+    - Đầu tư thị trường phai sinh
+    - thj truong pahi sinh
+    - phai sinh
+
+- intent: invest_stock
+  examples: |
+    - Tôi muốn đầu tư cổ phiếu
+    - Cổ phiếu hôm nay thế nào
+    - co phieu
+
+- intent: invest_bond
+  examples: |
+    - Tôi muốn đầu tư trái phiếu
+    - TráiTrái phiếu hôm nay thế nào
+    - trai phieu
+
+- intent: stock_limit_up
+  examples: |
+    - Mã nào trần hôm nay
+    - Hôm nay có mã nào trần không
+    - ma nao tran
+
+- intent: stock_limit_down
+  examples: |
+    - Mã nào sàn hôm nay
+    - Những cổ phiếu nào sàn hôm nay
+    - ma nao san
+
+- intent: stock_check_price
+  examples: |
+    - Mã [SPY](stock_code) hôm nay tăng hay giảm
+    - CP [BTC](stock_code) hôm nay lên hay xuống
+    - [ETH](stock_code) nhu the nao?
+
+- intent: out_of_scope
+  examples: |
+    - Thời tiết hôm nay thế nào?
+    - Bây giờ là mấy giờ?
+
+- regex: stock_code
+  examples: |
+    - [A-Z]{1,6}
+
 - regex: id
   examples: |
     - \d{1,5}

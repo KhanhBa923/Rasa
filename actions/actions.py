@@ -246,3 +246,38 @@ class ActionTellJoke(Action):
             print(f"Lỗi gọi API: {e}")
 
         return []
+    
+class ActionCheckStockStatus(Action):
+    def name(self) -> Text:
+        return "action_stock_status"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Lấy tên mã từ entity
+        stock_code = tracker.get_slot("stock_code")
+        dispatcher.utter_message(f"StockCode: {stock_code}")
+        if not stock_code:
+            dispatcher.utter_message("Bạn vui lòng cung cấp mã chứng khoán.")
+            return []
+        apiKey = "d10lrf1r01qlsac9tnfgd10lrf1r01qlsac9tng0"
+        url = f"https://finnhub.io/api/v1/quote?symbol={stock_code.upper()}&token={apiKey}"
+        response = requests.get(url)
+        data = response.json()
+        if "d" in data is None:
+            dispatcher.utter_message("Không lấy được thông tin mã chứng khoán.")
+            return [SlotSet("stock_code",None)]
+        if "c" in data and "pc" in data:
+            current = data["c"]
+            previous = data["pc"]
+
+            if current > previous:
+                dispatcher.utter_message(f"Mã {stock_code.upper()} hôm nay tăng.")
+            elif current < previous:
+                dispatcher.utter_message(f"Mã {stock_code.upper()} hôm nay giảm.")
+            else:
+                dispatcher.utter_message(f"Mã {stock_code.upper()} không đổi.")
+        else:
+            dispatcher.utter_message("Không lấy được thông tin mã chứng khoán.")
+        return [SlotSet("stock_code",None)]
