@@ -1,0 +1,88 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - ask_information
+  - calculate
+  - get_name_in_db
+  - add_user
+  - update_username_and_password
+  - delete_user
+  - register_account
+  - tell_joke
+entities:
+  - name
+  - id
+  - username
+  - password_hash
+  - re_password
+forms:
+  user_registration_form:
+    required_slots:
+      - username
+      - password_hash
+
+slots:
+  name:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: name
+  username:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: username
+  password_hash:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: password_hash
+  re_password:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: re_password
+  id:
+    type: text
+    mappings: 
+    - type: from_entity
+      entity: id
+actions:
+  - action_ask_information
+  - action_calculate
+  - action_query_user  
+  - action_add_user
+  - action_update_user
+  - action_tell_joke
+  - action_delete_user
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+  utter_say_name:
+  - text : "Hi, {name}"
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

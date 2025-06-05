@@ -1,0 +1,8 @@
+{
+  "name": "Debug Rasa Actions",
+  "type": "python",
+  "request": "launch",
+  "program": "${workspaceFolder}/actions/actions.py",
+  "args": [],
+  "console": "integratedTerminal"
+}

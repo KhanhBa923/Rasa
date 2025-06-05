@@ -1,0 +1,46 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+- rule: Say user name
+  steps:
+  - intent: ask_information
+  - action: action_ask_information
+- rule: calculate
+  steps:
+    - intent: calculate
+    - action: action_calculate
+- rule: get name in database
+  steps: 
+  - intent: get_name_in_db
+  - action: action_query_user
+- rule: add user and password
+  steps:
+  - intent: add_user
+  - action: action_add_user
+- rule: upate user and password
+  steps:
+  - intent: update_username_and_password
+  - action: action_update_user
+- rule: delete user with id
+  steps: 
+  - intent: delete_user
+  - action: action_delete_user
+- rule: register account
+  steps:
+  - intent: register_account
+  - action: user_registration_form
+  - active_loop: user_registration_form
+- rule: tell joke
+  steps: 
+  - intent: tell_joke
+  - action: action_tell_joke

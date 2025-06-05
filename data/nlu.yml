@@ -1,0 +1,147 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: ask_information
+  examples: |
+    - My name is [Nam](name)
+    - I'm [Cuong](name)
+    - Tôi là [Lan](name)
+    - Tôi tên là [Khanh](name)
+    - I'm [Huy](name)
+    - My name is [Linh](name)
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+- intent: calculate
+  examples: |
+    - 5 + 3
+    - 10 - 4
+    - 7+2
+    - 9-6
+    - 3 * 4
+    - 5*2
+    - 0.1+0.2
+    - 3.4 + 5.6
+    - 0.8 - 4.5
+    - 1.2-10
+- intent: get_name_in_db
+  examples: |
+    - Get me first person name
+- intent: add_user
+  examples: |
+    - Add [khanhba](username) with [123abc](password_hash)
+    - Tạo tài khoản [admin](username) mật khẩu [abc123](password_hash)
+    - Add [abc](username) with [test@#123](password_hash)
+    - Add [test](username) with [mngf](password_hash)
+- intent: update_username_and_password
+  examples: |
+    - Update [10](id) with [khanhba](username) and [abc123](password_hash)
+    - Update [9](id) with [test123](username) and [123Test@](password_hash)
+    - Update [01](id) with [aswd345](username) and [Rasa@132](password_hash) 
+- intent: delete_user
+  examples: |
+    - delete user [10](id)
+    - delete user [09](id)
+    - delete user [102](id)
+
+- intent: register_account
+  examples: |
+    - I want register acc
+- intent: tell_joke
+  examples: |
+    - tell joke
+- regex: id
+  examples: |
+    - \d{1,5}
+- regex: username
+  examples: |
+    - [a-zA-Z0-9_]{3,20}
+
+- regex: password_hash
+  examples: |
+    - [a-zA-Z0-9@#$%^&+=!]{6,30}
