@@ -1,34 +1,6 @@
 version: "3.1"
 
 stories:
-
-- story: happy path
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
-
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
-
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
-
 - story: Đầu tư dài hạn
   steps:
     - intent: invest_long_term
@@ -80,3 +52,44 @@ stories:
     - action: utter_stock_invest
     - action: utter_bond_invest
     - action: utter_compare_bond_stock_invest
+
+
+# - story: happy path - name confirmation
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
+#   - action: name_form
+#   - active_loop: name_form
+#   - intent: provide_name
+#     entities:
+#     - name: "Nam"
+#   - slot_was_set:
+#     - user_name: "Nam"  
+#   - action: utter_confirm_name
+#   - intent: affirm
+#   - action: utter_name_confirmed
+#   - active_loop: null
+
+# - story: name correction path
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
+#   - action: name_form
+#   - active_loop: name_form
+#   - intent: provide_name
+#     entities:
+#     - name: "Wrong Name"
+#   - slot_was_set:
+#     - user_name: "Wrong Name"
+#   - action: utter_confirm_name
+#   - intent: deny
+#   - action: utter_ask_name_again
+#   - intent: provide_name
+  #   entities:
+  #   - name: "Correct Name"
+  # - slot_was_set:
+  #   - user_name: "Correct Name"
+  # - action: utter_confirm_name
+  # - intent: affirm
+  # - action: utter_name_confirmed
+  # - active_loop: null

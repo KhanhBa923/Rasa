@@ -2,6 +2,9 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
+from rasa_sdk.forms import FormValidationAction
+from rasa_sdk.types import DomainDict
+from datetime import datetime
 
 import re
 import requests
@@ -207,20 +210,7 @@ class ActionDeleteUser(Action):
             dispatcher.utter_message(text=f"Lỗi khi xóa người dùng: {str(e)}")
 
         return [SlotSet("username", None), SlotSet("password_hash", None)]
-    
-class SubmitUserRegistrationForm(Action):
-    def name(self) -> Text:
-        return "action_submit_user_registration_form"
 
-    def run(self, dispatcher, tracker, domain):
-        username = tracker.get_slot("username")
-        password = tracker.get_slot("password_hash")
-
-        # Có thể thêm logic kiểm tra hoặc lưu DB ở đây
-        dispatcher.utter_message(f"Đăng ký thành công cho {username} với password {password}!")
-
-        return []
-    
 class ActionTellJoke(Action):
     def name(self) -> Text:
         return "action_tell_joke"
@@ -265,9 +255,9 @@ class ActionCheckStockStatus(Action):
         url = f"https://finnhub.io/api/v1/quote?symbol={stock_code.upper()}&token={apiKey}"
         response = requests.get(url)
         data = response.json()
-        if "d" in data is None:
-            dispatcher.utter_message("Không lấy được thông tin mã chứng khoán.")
-            return [SlotSet("stock_code",None)]
+        if data.get("d") is None:
+            dispatcher.utter_message(f"Mã {stock_code.upper()} không tồn tại hoặc không có dữ liệu.")
+            return [SlotSet("stock_code", None)]
         if "c" in data and "pc" in data:
             current = data["c"]
             previous = data["pc"]
@@ -280,16 +270,100 @@ class ActionCheckStockStatus(Action):
                 dispatcher.utter_message(f"Mã {stock_code.upper()} không đổi.")
         else:
             dispatcher.utter_message("Không lấy được thông tin mã chứng khoán.")
-        return [SlotSet("stock_code",None)]
+        return [SlotSet("stock_code",None)] 
     
-# class ActionCheckStockStatus(Action):
-#     def name(self) -> Text:
-#         return "action_compare_bond_stock_invest"
+class ValidateNameForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_name_form"
 
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    def validate_user_name(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate user_name value."""
         
-#         user_text= tracker.latest_message.get("text","").lower()
+        if slot_value and len(slot_value.strip()) > 0:
+            # Capitalize first letter of each word
+            formatted_name = " ".join([word.capitalize() for word in slot_value.strip().split()])
+            return {"user_name": formatted_name}
+        else:
+            dispatcher.utter_message(text="Tên không được để trống. Vui lòng nhập tên của bạn.")
+            return {"user_name": None}
+           
+class ActionConfirmName(Action):
+    def name(self) -> Text:
+        return "action_confirm_name"
 
-#         return [SlotSet("stock_code",None)]
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        user_name = tracker.get_slot("user_name")
+        
+        if user_name:
+            message = f"Tên của bạn là {user_name}, đúng không?"
+            buttons = [
+                {"title": "Đúng rồi", "payload": "/affirm"},
+                {"title": "Không đúng", "payload": "/deny"}
+            ]
+            dispatcher.utter_message(text=message, buttons=buttons)
+        
+        return []
+class ActionRestart(Action):
+    def name(self) -> Text:
+      return "action_restart"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+       
+       dispatcher.utter_message(text="Xin chào.Bạn tên là gì?.")
+       return []
+    
+class ActionShowTime(Action):
+    def name(self) -> Text:
+        return "action_show_time"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        now =datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        dispatcher.utter_message(text=f"The time is :{current_time}")
+        return[]
+    
+class ActionCheckWeather(Action):
+    def name(self) -> Text:
+        return "action_check_weather"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        city = tracker.get_slot("city")
+        dispatcher.utter_message(text=f"{city}")
+        api_key = "7ef5f87897d77674dbe5846f9c21778a" 
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric&lang=vi"
+        try:
+            response = requests.get(url)
+
+            data = response.json()
+            code = data["cod"]
+            dispatcher.utter_message(text=f"code {code}")
+            if(code != 200):
+                dispatcher.utter_message(text="Không thể lấy thông tin thời tiết lúc này.")
+                return[]
+            else:
+            # # if data.get("main") and data.get("weather"):
+                temp = data["main"]["temp"]
+                weather_description = data["weather"][0]["description"]
+                message = (
+                    f"Thời tiết tại {city}: {weather_description}, nhiệt độ {temp}°C."
+                )
+                dispatcher.utter_message(text=f"{message}")
+        except Exception as e:
+            message = f"Lỗi khi gọi API thời tiết: {str(e)}"
+            dispatcher.utter_message(text=f"Error {message}")
+        return[]

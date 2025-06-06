@@ -17,14 +17,14 @@ nlu:
     - goodevening
     - good afternoon
 
-- intent: ask_information
-  examples: |
-    - My name is [Nam](name)
-    - I'm [Cuong](name)
-    - Tôi là [Lan](name)
-    - Tôi tên là [Khanh](name)
-    - I'm [Huy](name)
-    - My name is [Linh](name)
+# - intent: ask_information
+#   examples: |
+#     - My name is [Nam](name)
+#     - I'm [Cuong](name)
+#     - Tôi là [Lan](name)
+#     - Tôi tên là [Khanh](name)
+#     - I'm [Huy](name)
+#     - My name is [Linh](name)
 - intent: goodbye
   examples: |
     - cu
@@ -200,6 +200,14 @@ nlu:
     - Ma [Abc][stock_code] tang hay giam hom nay
     - Hom nay ma cp [xyz](stock_code) nhu the nao, tang hay giam
     - Ma [fGh](stock_code) len hay xuong
+    - Ma [Bnm](stock_code) co gia tri la
+    - [Cvb](stock_code) the nao
+    - Co phieu [ZXX](stock_code) the nao hom nay
+    - Toi muon biet gia tri cua [Jlk](stock_code) hom nay
+    - gia tri cua [Asd] so voi hom qua
+    - Giá trị công ty [uIo](stock_code) hôm nay như thế nàoGia
+    - Trái phiếu của [RTY](stock_code) như thế nào
+    - Hôm nay giá trị cổ phiếu [QWE](stock_code)
 - intent: compare_bond_stock_invest
   examples: |
     - So sánh cổ phiếu và trái phiếu
@@ -211,6 +219,24 @@ nlu:
     - Thời tiết hôm nay thế nào?
     - Bây giờ là mấy giờ?
 
+- intent: provide_name
+  examples: |
+    - My name is [Nam](name)
+    - I'm [Cuong](name)
+    - Tôi là [Lan](name)
+    - Tôi tên là [Khanh](name)
+    - I'm [Huy](name)
+    - My name is [Linh](name)
+- intent: ask_time
+  examples: |
+    - What time
+    - time
+    - Bây giờ mấy giờ
+    - I want the time
+- intent: check_weather
+  examples: |
+    - Check weather in [Hanoi](city)
+    - Thoi tiet o [HCM](city)
 - regex: stock_code
   examples: |
     - [A-Za-z]{1,6}
@@ -225,3 +251,6 @@ nlu:
 - regex: password_hash
   examples: |
     - [a-zA-Z0-9@#$%^&+=!]{6,30}
+- regex: city
+  examples: |
+    - [A-Za-z]{3,10}
