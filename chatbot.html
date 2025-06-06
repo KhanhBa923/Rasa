@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Tư vấn Đầu tư</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: #4267b2;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin: 10px 0;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background: #4267b2;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .bot-message {
+            background: #e4e6ea;
+            color: #333;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: white;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .chat-input button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background: #4267b2;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .status {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>🤖 Chatbot Tư vấn</h3>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Xin chào! Tôi có thể giúp bạn tìm hiểu về chứng khoán. Bạn muốn hỏi gì?
+            </div>
+        </div>
+        
+        <div class="status" id="status">Sẵn sáng</div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." />
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const status = document.getElementById('status');
+        
+        const RASA_URL = 'http://localhost:5005/webhooks/rest/webhook';
+        
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Hiển thị tin nhắn người dùng
+            addMessage(message, 'user');
+            messageInput.value = '';
+            
+            // Hiển thị trạng thái
+            status.textContent = '🤖 Đang trả lời...';
+            
+            try {
+                const response = await fetch(RASA_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sender: 'test_user',
+                        message: message
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                status.textContent = 'Sẵn sáng';
+                
+                // Hiển thị phản hồi của bot
+                if (data && data.length > 0) {
+                    data.forEach(botMessage => {
+                        if (botMessage.text) {
+                            addMessage(botMessage.text, 'bot');
+                        }
+                    });
+                } else {
+                    addMessage('Tôi chưa hiểu câu hỏi này. Bạn có thể hỏi khác được không?', 'bot');
+                }
+                
+            } catch (error) {
+                console.error('Lỗi:', error);
+                status.textContent = '❌ Lỗi kết nối';
+                addMessage('Có lỗi xảy ra. Vui lòng kiểm tra Rasa server có đang chạy không.', 'bot');
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Gửi tin nhắn bằng Enter
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Kiểm tra kết nối Rasa server
+        async function checkRasaConnection() {
+            try {
+                const response = await fetch('http://localhost:5005/');
+                if (response.ok) {
+                    status.textContent = '✅ Đã kết nối';
+                } else {
+                    status.textContent = '⚠️ Rasa server không phản hồi';
+                }
+            } catch (error) {
+                status.textContent = '❌ Không thể kết nối Rasa server';
+            }
+        }
+        
+        // Kiểm tra kết nối khi load trang
+        checkRasaConnection();
+    </script>
+</body>
+</html>
