@@ -176,7 +176,7 @@ nlu:
 - intent: invest_bond
   examples: |
     - Tôi muốn đầu tư trái phiếu
-    - TráiTrái phiếu hôm nay thế nào
+    - Trái phiếu hôm nay thế nào
     - trai phieu
 
 - intent: stock_limit_up
@@ -196,7 +196,16 @@ nlu:
     - Mã [SPY](stock_code) hôm nay tăng hay giảm
     - CP [BTC](stock_code) hôm nay lên hay xuống
     - [ETH](stock_code) nhu the nao?
-
+    - Co pheiu [FPT](stock_code) nhu the nao
+    - Ma [Abc][stock_code] tang hay giam hom nay
+    - Hom nay ma cp [xyz](stock_code) nhu the nao, tang hay giam
+    - Ma [fGh](stock_code) len hay xuong
+- intent: compare_bond_stock_invest
+  examples: |
+    - So sánh cổ phiếu và trái phiếu
+    - co phieu va trai phieu
+    - Co phieu va trai phieu khac nhau nhu the nao
+    - trai oheiu va co phieu
 - intent: out_of_scope
   examples: |
     - Thời tiết hôm nay thế nào?
@@ -204,7 +213,7 @@ nlu:
 
 - regex: stock_code
   examples: |
-    - [A-Z]{1,6}
+    - [A-Za-z]{1,6}
 
 - regex: id
   examples: |

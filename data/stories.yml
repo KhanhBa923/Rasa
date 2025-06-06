@@ -62,14 +62,21 @@ stories:
 - story: Mã nào trần hôm nay
   steps:
     - intent: stock_limit_up
-    - action: action_stock_limit_up
+    - action: utter_stock_limit_up
 
 - story: Mã nào sàn hôm nay
   steps:
     - intent: stock_limit_down
-    - action: action_stock_limit_down
+    - action: utter_stock_limit_down
 
 - story: Mã ABC tăng hay giảm
   steps:
     - intent: stock_check_price
     - action: action_stock_status
+
+- story: So sánh cố phiếu và trái phiếu
+  steps:
+    - intent: compare_bond_stock_invest
+    - action: utter_stock_invest
+    - action: utter_bond_invest
+    - action: utter_compare_bond_stock_invest

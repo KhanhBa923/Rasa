@@ -89,3 +89,15 @@ stories:
       are you a bot?
     intent: bot_challenge
   - action: utter_iamabot
+- story: Check stock price 1
+  steps:
+  - user: |
+      Ma TEV hom nay nhu the nao
+    intent: stock_check_price
+  - action: action_stock_status
+- story: Check stock price 2
+  steps:
+  - user: |
+      Ma DEN hom nay tang hay giam
+    intent: stock_check_price
+  - action: action_stock_status

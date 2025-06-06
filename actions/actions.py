@@ -281,3 +281,15 @@ class ActionCheckStockStatus(Action):
         else:
             dispatcher.utter_message("Không lấy được thông tin mã chứng khoán.")
         return [SlotSet("stock_code",None)]
+    
+# class ActionCheckStockStatus(Action):
+#     def name(self) -> Text:
+#         return "action_compare_bond_stock_invest"
+
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+#         user_text= tracker.latest_message.get("text","").lower()
+
+#         return [SlotSet("stock_code",None)]
